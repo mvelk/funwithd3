@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Unknown Pleasures</title>
+    <style>
+      path {
+        stroke: white;
+        stroke-width: 2;
+        fill: black;
+      }
+
+      body, svg {
+        background-color: black;
+      }
+    </style>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      var svg = d3.select('body')
+        .append('svg')
+        .attr('width', window.innerWidth)
+        .attr('height', window.innerHeight);
+      var data = d3.range(50, 650, 10).map(y_offset => {
+        return d3.range(100, 700, 10).map(d => {
+          var y = d;
+          if (y < 300 || y > 500) {
+            y = 50;
+          } else {
+            y = 500;
+          }
+          return [d, y_offset - Math.random() * y / 10];
+        });
+      });
+
+
+      var line = d3.line()
+        .x(d => d[0])
+        .y(d => d[1])
+        .curve(d3.curveBasis);
+
+      svg.selectAll('path')
+        .data(data)
+        .enter()
+        .append('path')
+        .attr('d', line);
+    </script>
+  </body>
+</html>
