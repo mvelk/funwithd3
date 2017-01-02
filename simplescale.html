@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Scale That Data</title>
+    <style media="screen">
+      rect {
+        stroke: white;
+        stroke-width: 2;
+        fill: black;
+      }
+
+      .x.axis path, .x.axis line {
+        fill: none;
+        stroke: steelblue;
+      }
+
+      .x.axis text {
+        fill: steelblue;
+      }
+
+      text {
+        font-family: sans-serif;
+        fill: salmon;
+        font-size: 12px;
+      }
+
+      .marker circle {
+        fill: none;
+        stroke: salmon;
+        stroke-width: 2;
+      }
+    </style>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      const margin = {
+        top: 10,
+        right: 60,
+        bottom: 20,
+        left: 20
+      };
+
+      const data = [
+        ["Burj Khalifa", 2717],
+        ["Shanghai Tower", 2073],
+        ["Makkah Royal Clock Tower Hotel", 1971],
+        ["One World Trade Center", 1776],
+        ["Taipei 101", 1670]
+      ];
+
+      const height = 125;
+      const width = 800;
+
+      const scale = d3.scaleLinear()
+        .domain(d3.extent(data, d => d[1]))
+        .range([0, width]);
+
+      const svg = d3.select('body')
+        .append('svg')
+          .attr('width', width + margin.left + margin.right)
+          .attr('height', height + margin.bottom + margin.top);
+
+      const axis = d3.axisBottom().scale(scale);
+
+      svg.append('g').call(axis).attr('class', 'x axis').attr('transform', `translate(${margin.left}, ${height - margin.bottom})`);
+
+      const markers = svg.append('g');
+
+      markers.selectAll('text')
+        .data(data)
+        .enter()
+        .append('text')
+          .text(d => d[0])
+          .attr('transform', d => {
+            return `translate(${scale(d[1])}, ${height - margin.bottom}) rotate(-20) translate(${5 + margin.left}, -5)`;
+          });
+
+      let circles = markers.selectAll('g')
+        .data(data)
+        .enter()
+        .append('g')
+        .attr('class', 'marker');
+
+      circles.append('circle')
+          .attr('cx', d => scale(d[1]) + margin.left)
+          .attr('cy', height - margin.bottom)
+          .attr('r', 5);
+    </script>
+  </body>
+</html>

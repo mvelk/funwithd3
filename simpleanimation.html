@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Simple Animation</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+  </head>
+  <body>
+    <script>
+      d3.select('body').append('svg')
+        .attr('width', 300)
+        .attr('height', 300)
+        .append('circle')
+          .attr('r', 10)
+          .attr('cx', 5)
+          .attr('cy', 5)
+          .transition()
+            .duration(5000)
+            .ease(d3.easeBounceIn)
+            .attr('cx', 295)
+            .attr('cy', 295);
+    </script>
+  </body>
+</html>
