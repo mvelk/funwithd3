@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Angular Donut</title>
+  </head>
+  <body ng-app="DonutApp">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular.min.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="app.js"></script>
+    <script>
+      const color = d3.scaleOrdinal(d3.schemeCategory10);
+      let data = [10, 20, 30];
+      let width = 300;
+      let height = 300;
+      let min = Math.min(width, height);
+      const svg = d3.select('body')
+        .append('svg')
+        .attr('height', height)
+        .attr('width', width);
+      const pie = d3.pie().sort(null);
+      const arc = d3.arc()
+        .outerRadius(min / 2 * 0.9)
+        .innerRadius(min / 2 * 0.5);
+
+      let g = svg.append('g')
+        .attr('transform', `translate(${width / 2}, ${height / 2})`);
+      g.selectAll('path')
+        .data(pie(data))
+        .enter()
+        .append('path')
+          .style('stroke', 'white')
+          .attr('d', arc)
+          .attr('fill', (d, i) => color(i));
+    </script>
+  </body>
+</html>
